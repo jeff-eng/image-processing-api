@@ -1,5 +1,6 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+// import supertest from 'supertest';
+// import app from '../app';
 // // Tell Supertest what we are running are endpoint tests on
 // const request = supertest(app);
 // describe('Test endpoint response for index', () => {

@@ -1,7 +1,7 @@
 import supertest from 'supertest';
-import images from '../../../routes/api/images';
+import app from '../../../app';
 
-const request = supertest(images);
+const request = supertest(app);
 
 // TODO: Write test for the /images endpoint
 describe('Test endpoint responses', () => {

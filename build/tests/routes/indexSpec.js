@@ -40,8 +40,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
-var index_1 = __importDefault(require("../../routes/index"));
-var request = (0, supertest_1.default)(index_1.default);
+var app_1 = __importDefault(require("../../app"));
+var request = (0, supertest_1.default)(app_1.default);
 describe('Test API endpoint route', function () {
     it('should return status code 200 at api endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
@@ -50,7 +50,6 @@ describe('Test API endpoint route', function () {
                 case 0: return [4 /*yield*/, request.get('/')];
                 case 1:
                     response = _a.sent();
-                    console.log(response.status);
                     expect(response.status).toBe(200);
                     return [2 /*return*/];
             }

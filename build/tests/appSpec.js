@@ -40,11 +40,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
-var app_1 = __importDefault(require("../../../app"));
+var app_1 = __importDefault(require("../app"));
+// Tell Supertest what we are running are endpoint tests on
 var request = (0, supertest_1.default)(app_1.default);
-// TODO: Write test for the /images endpoint
-describe('Test endpoint responses', function () {
-    it('should return status code 200 upon reaching /images endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
+describe('Test endpoint response for app', function () {
+    it('responds with status code', function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
