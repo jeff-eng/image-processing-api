@@ -7,7 +7,6 @@ var express_1 = __importDefault(require("express"));
 var images_1 = __importDefault(require("./api/images"));
 var routes = express_1.default.Router();
 routes.get('/', function (req, res) {
-    console.log('routes index.ts', res.statusCode);
     res.send('main api route');
 });
 routes.use('/images', images_1.default);

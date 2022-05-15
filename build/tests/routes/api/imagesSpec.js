@@ -43,12 +43,12 @@ var supertest_1 = __importDefault(require("supertest"));
 var app_1 = __importDefault(require("../../../app"));
 var request = (0, supertest_1.default)(app_1.default);
 // TODO: Write test for the /images endpoint
-describe('Test endpoint responses', function () {
-    it('should return status code 200 upon reaching /images endpoint', function () { return __awaiter(void 0, void 0, void 0, function () {
+describe('Tests /GET requests to /api/images', function () {
+    it('should return status code 200 at /api/images', function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/')];
+                case 0: return [4 /*yield*/, request.get('/api/images')];
                 case 1:
                     response = _a.sent();
                     expect(response.status).toBe(200);
@@ -56,4 +56,31 @@ describe('Test endpoint responses', function () {
             }
         });
     }); });
+    it('/api/images should return instructions on how to structure URL if not provided', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response, instructions;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/api/images')];
+                case 1:
+                    response = _a.sent();
+                    instructions = 'Endpoint format should be: \/api\/images?filename=example&width=200&height=200';
+                    expect(response.text).toEqual(instructions);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    // This should test a successful response when query string parameters are given
+    it('should return 200 when query string parameters provided', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, request.get('/api/images').query({ name: 'jeff' })];
+                case 1:
+                    response = _a.sent();
+                    expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    // Image processing test goes here
 });

@@ -4,8 +4,16 @@ import express from 'express';
 const images = express.Router();
 
 images.get('/', (req, res) => {
-    console.log('images.ts', res.statusCode);
-    res.send('Images route');
+    const queryObjectLength = Object.keys(req.query).length;
+    
+    if ( queryObjectLength === 0) {
+        const instructions = 'Endpoint format should be: \/api\/images?filename=example&width=200&height=200';
+        res.send(instructions);
+    } else if (queryObjectLength > 0) {
+        res.sendStatus(200);
+    } 
+
+
 });
 
 // Export module

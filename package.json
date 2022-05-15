@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "prettier": "prettier --config .prettierrc.json 'src/**/*.ts' --write",
-    "lint": "eslint 'index.ts'",
+    "lint": "eslint 'app.ts'",
     "jasmine": "jasmine",
     "build": "npx tsc",
     "test": "npm run build && npm run jasmine",
-    "start": "nodemon src/index.ts"
+    "start": "nodemon src/app.ts"
   },
   "repository": {
     "type": "git",
