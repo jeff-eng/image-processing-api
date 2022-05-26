@@ -4,10 +4,9 @@ import paramchecker from '../../utilities/paramchecker';
 // Create individual route object for images
 const images = express.Router();
 
-// Images endpoint
+// Images endpoint with custom middleware
 images.get('/', paramchecker, (req, res) => {
-    res.send('Hello');
-    console.log('/images endpoint');
+    res.send('Hello, you have reached the \\images endpoint with query params.');
 });
 
 // Export module
