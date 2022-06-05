@@ -47,12 +47,8 @@ var resizer = function (filename, width, height) { return __awaiter(void 0, void
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 filepath = "images/full/".concat(filename, ".jpeg");
-                console.log('willem DAFOE!');
-                console.log(width);
-                console.log(height);
-                console.log(filename);
                 return [4 /*yield*/, (0, sharp_1.default)(filepath)
-                        .resize(width, height)
+                        .resize(Number(width), Number(height))
                         .toFile("images/thumb/".concat(filename, "-resized.jpeg"))];
             case 1:
                 _a.sent();

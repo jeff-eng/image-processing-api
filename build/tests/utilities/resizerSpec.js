@@ -39,17 +39,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// import sharp from 'sharp';
 var resizer_1 = __importDefault(require("../../utilities/resizer"));
-// Resizer:
-// 1) Takes in a filename (without file extension), width, and height
-// 2) Read file from file system using the filename argument
-// 3) Pass in the file to the Sharp method
-// 4) Save result to a variable
-// 5) Write modded file to the folder using fs module
+var fs_1 = require("fs");
 describe('resizer - basic functionality', function () {
     // Pass a filename to resizer that doesn't match a filename in images/full folder
-    it('resizer throws an error when passing in non-matching filename as input', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('resizer should throw error when passing in non-matching filename as input', function () { return __awaiter(void 0, void 0, void 0, function () {
         var filename;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -63,21 +57,47 @@ describe('resizer - basic functionality', function () {
         });
     }); });
     // Pass in a width and height that can't be converted to a number
-    it('resizer throws an error when passing strings to width and height as input', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it('resizer should throw error when passing strings to width and height as input', function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: 
-                // Expect an error to be thrown
-                return [4 /*yield*/, expectAsync((0, resizer_1.default)('fjord', 'foo', 'bar')).toBeRejectedWithError()];
+                case 0: return [4 /*yield*/, expectAsync((0, resizer_1.default)('fjord', 'foo', 'bar')).toBeRejectedWithError()];
                 case 1:
-                    // Expect an error to be thrown
                     _a.sent();
                     return [2 /*return*/];
             }
         });
     }); });
-    // // Pass in valid filename that exists in images/full folder and valid width/height
-    // it('valid filename and valid width/height should not return undefined when attempting to do readFile', () => {
-    //     // Doing a file system readfile action should not return undefined
-    // });
+    // Pass in valid filename but width and height as strings
+    it('resizer should not throw error when providing valid filename but W&H as strings', function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, expectAsync((0, resizer_1.default)('fjord', '420', '420')).not.toBeRejectedWithError()];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    // Pass in valid filename that exists in images/full folder and valid width/height
+    it('opening file via fs should pass - returns resolved promise; else would return error', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var filename, filepath;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    filename = 'fjord';
+                    filepath = "images/thumb/".concat(filename, "-resized.jpeg");
+                    // Calls resizer method to resize and write file to directory
+                    return [4 /*yield*/, (0, resizer_1.default)(filename, 420, 420)];
+                case 1:
+                    // Calls resizer method to resize and write file to directory
+                    _a.sent();
+                    // Check that the resized file is in images/thumb folder using file system - resolved means success
+                    return [4 /*yield*/, expectAsync(fs_1.promises.open(filepath, 'r')).toBeResolved()];
+                case 2:
+                    // Check that the resized file is in images/thumb folder using file system - resolved means success
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
 });
