@@ -11,7 +11,7 @@ describe('Tests /GET requests to /api/images', () => {
 
     it('/api/images should return instructions on how to structure URL if not provided', async () => {
         const response = await request.get('/api/images');
-        const instructions = 'Endpoint format should be: \/api\/images?filename=example&width=200&height=200';
+        const instructions = 'Invalid Endpoint - Format should be: \/api\/images?filename=example&width=200&height=200';
         expect(response.text).toEqual(instructions);
     });
 

@@ -3,13 +3,25 @@ import express from 'express';
 
 // Parameter checker function (function returns true/false if user supplied proper URL parameters)
 const paramchecker = (req: express.Request, res: express.Response, next: Function) => {
-    // Use the request object to obtain the query parameter keys
-    const parameters = Object.keys(req.query);
-    
-    if (parameters.includes('filename') && parameters.includes('width') && parameters.includes('height')) {
+    // Use the request object to obtain the query parameter keys and values
+    const parameterKeys = Object.keys(req.query);
+    const paramVals = Object.values(req.query);
+
+    const width = paramVals[1] as string;
+    const height = paramVals[2] as string;
+
+    // Attempt to convert string to number (returns NaN if unable)
+    const WidthIsNum: number = parseInt(width);
+    const HeightIsNum: number = parseInt(height);
+
+    if (parameterKeys.includes('filename') && 
+    parameterKeys.includes('width') && 
+    parameterKeys.includes('height') &&
+    WidthIsNum &&
+    HeightIsNum) {
         next();
     } else {
-        res.send('Endpoint format should be: \/api\/images?filename=example&width=200&height=200');
+        res.send('Invalid Endpoint - Format should be: \/api\/images?filename=example&width=200&height=200');
     }
 
 };

@@ -39,45 +39,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var supertest_1 = __importDefault(require("supertest"));
-var app_1 = __importDefault(require("../../../app"));
-var request = (0, supertest_1.default)(app_1.default);
-describe('Tests /GET requests to /api/images', function () {
-    it('should return status code 200 at /api/images', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/images')];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(200);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('/api/images should return instructions on how to structure URL if not provided', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response, instructions;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/images')];
-                case 1:
-                    response = _a.sent();
-                    instructions = 'Invalid Endpoint - Format should be: \/api\/images?filename=example&width=200&height=200';
-                    expect(response.text).toEqual(instructions);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('should return 200 when query string parameters provided', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/images').query({ name: 'jeff' })];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(200);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-});
+var sharp_1 = __importDefault(require("sharp"));
+var resizer = function (filename, width, height) { return __awaiter(void 0, void 0, void 0, function () {
+    var filepath, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                filepath = "images/full/".concat(filename, ".jpeg");
+                console.log('willem DAFOE!');
+                console.log(width);
+                console.log(height);
+                console.log(filename);
+                return [4 /*yield*/, (0, sharp_1.default)(filepath)
+                        .resize(width, height)
+                        .toFile("images/thumb/".concat(filename, "-resized.jpeg"))];
+            case 1:
+                _a.sent();
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                console.log('error thrown on line 12');
+                throw err_1;
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.default = resizer;

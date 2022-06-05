@@ -39,45 +39,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var supertest_1 = __importDefault(require("supertest"));
-var app_1 = __importDefault(require("../../../app"));
-var request = (0, supertest_1.default)(app_1.default);
-describe('Tests /GET requests to /api/images', function () {
-    it('should return status code 200 at /api/images', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
+// import sharp from 'sharp';
+var resizer_1 = __importDefault(require("../../utilities/resizer"));
+// Resizer:
+// 1) Takes in a filename (without file extension), width, and height
+// 2) Read file from file system using the filename argument
+// 3) Pass in the file to the Sharp method
+// 4) Save result to a variable
+// 5) Write modded file to the folder using fs module
+describe('resizer - basic functionality', function () {
+    // Pass a filename to resizer that doesn't match a filename in images/full folder
+    it('resizer throws an error when passing in non-matching filename as input', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var filename;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/images')];
+                case 0:
+                    filename = 'test';
+                    return [4 /*yield*/, expectAsync((0, resizer_1.default)(filename, 420, 420)).toBeRejectedWithError()];
                 case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(200);
+                    _a.sent();
                     return [2 /*return*/];
             }
         });
     }); });
-    it('/api/images should return instructions on how to structure URL if not provided', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response, instructions;
+    // Pass in a width and height that can't be converted to a number
+    it('resizer throws an error when passing strings to width and height as input', function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/images')];
+                case 0: 
+                // Expect an error to be thrown
+                return [4 /*yield*/, expectAsync((0, resizer_1.default)('fjord', 'foo', 'bar')).toBeRejectedWithError()];
                 case 1:
-                    response = _a.sent();
-                    instructions = 'Invalid Endpoint - Format should be: \/api\/images?filename=example&width=200&height=200';
-                    expect(response.text).toEqual(instructions);
+                    // Expect an error to be thrown
+                    _a.sent();
                     return [2 /*return*/];
             }
         });
     }); });
-    it('should return 200 when query string parameters provided', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/images').query({ name: 'jeff' })];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(200);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
+    // // Pass in valid filename that exists in images/full folder and valid width/height
+    // it('valid filename and valid width/height should not return undefined when attempting to do readFile', () => {
+    //     // Doing a file system readfile action should not return undefined
+    // });
 });

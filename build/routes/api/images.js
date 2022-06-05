@@ -4,17 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
+var paramchecker_1 = __importDefault(require("../../utilities/paramchecker"));
 // Create individual route object for images
 var images = express_1.default.Router();
-images.get('/', function (req, res) {
-    var queryObjectLength = Object.keys(req.query).length;
-    if (queryObjectLength === 0) {
-        var instructions = 'Endpoint format should be: \/api\/images?filename=example&width=200&height=200';
-        res.send(instructions);
-    }
-    else if (queryObjectLength > 0) {
-        res.sendStatus(200);
-    }
+// Images endpoint with custom middleware
+images.get('/', paramchecker_1.default, function (req, res) {
+    res.send('Hello, you have reached the \\images endpoint with query params.');
 });
 // Export module
 exports.default = images;
