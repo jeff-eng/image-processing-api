@@ -25,7 +25,7 @@ describe('Tests /GET requests to /api/images', () => {
 });
 
 describe('Tests for resizing using URL', () => {
-    
+
     // Invalid filename and valid width/height values should return 400 error
     it('should return 400 error when invalid filename and valid width/height provided', async () => {
         const filename = 'beach';
@@ -51,5 +51,7 @@ describe('Tests for resizing using URL', () => {
 
         await expectAsync(fs.open(`images/thumb/${filename}-resized.jpeg`, 'r')).toBeResolved();
     });
- 
+    
+    // Test content type in the header for response when served the resized jpeg
+
 });
