@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
 var app_1 = __importDefault(require("../../../app"));
+var fs_1 = require("fs");
 var request = (0, supertest_1.default)(app_1.default);
 describe('Tests /GET requests to /api/images', function () {
     it('should return status code 200 at /api/images', function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -76,6 +77,54 @@ describe('Tests /GET requests to /api/images', function () {
                 case 1:
                     response = _a.sent();
                     expect(response.status).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+});
+describe('Tests for resizing using URL', function () {
+    // Invalid filename and valid width/height values should return 400 error
+    it('should return 400 error when invalid filename and valid width/height provided', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var filename, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    filename = 'beach';
+                    return [4 /*yield*/, request.get("/api/images?filename=".concat(filename, "&width=100&height=100"))];
+                case 1:
+                    response = _a.sent();
+                    expect(response.statusCode).toBe(400);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    // Response should return and display the resized image when visiting URL with valid parameters
+    it('should return 200 status and image when visiting URL with valid parameters', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var filename, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    filename = 'fjord';
+                    return [4 /*yield*/, request.get("/api/images?filename=".concat(filename, "&width=100&height=100"))];
+                case 1:
+                    response = _a.sent();
+                    expect(response.statusCode).toBe(200);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('fs should be able to resolve promise when trying to open resized image file', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var filename, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    filename = 'fjord';
+                    return [4 /*yield*/, request.get("/api/images?filename=".concat(filename, "&width=100&height=100"))];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, expectAsync(fs_1.promises.open("images/thumb/".concat(filename, "-resized.jpeg"), 'r')).toBeResolved()];
+                case 2:
+                    _a.sent();
                     return [2 /*return*/];
             }
         });

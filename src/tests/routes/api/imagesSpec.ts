@@ -1,5 +1,7 @@
 import supertest from 'supertest';
 import app from '../../../app';
+import resizer from '../../../utilities/resizer';
+import {promises as fs} from 'fs';
 
 const request = supertest(app);
 
@@ -20,4 +22,34 @@ describe('Tests /GET requests to /api/images', () => {
         expect(response.status).toBe(200);
     });
 
+});
+
+describe('Tests for resizing using URL', () => {
+    
+    // Invalid filename and valid width/height values should return 400 error
+    it('should return 400 error when invalid filename and valid width/height provided', async () => {
+        const filename = 'beach';
+
+        const response = await request.get(`/api/images?filename=${filename}&width=100&height=100`);
+
+        expect(response.statusCode).toBe(400);
+    });
+       
+    // Response should return and display the resized image when visiting URL with valid parameters
+    it('should return 200 status and image when visiting URL with valid parameters', async () => {
+        const filename = 'fjord';
+
+        const response = await request.get(`/api/images?filename=${filename}&width=100&height=100`);
+
+        expect(response.statusCode).toBe(200);
+    });
+
+        
+    it('fs should be able to resolve promise when trying to open resized image file', async () => {
+        const filename = 'fjord';
+        const response = await request.get(`/api/images?filename=${filename}&width=100&height=100`);
+
+        await expectAsync(fs.open(`images/thumb/${filename}-resized.jpeg`, 'r')).toBeResolved();
+    });
+ 
 });

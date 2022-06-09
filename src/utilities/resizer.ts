@@ -1,6 +1,6 @@
 import sharp from 'sharp';
 
-const resizer = async (filename: string, width: string | number, height: string | number) => {
+const resizer = async (filename: string, width: string | number, height: string | number): Promise<void> => {
     try {
         const filepath = `images/full/${filename}.jpeg`;
         

@@ -47,15 +47,16 @@ var resizer = function (filename, width, height) { return __awaiter(void 0, void
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 filepath = "images/full/".concat(filename, ".jpeg");
+                // Call the async sharp method
                 return [4 /*yield*/, (0, sharp_1.default)(filepath)
                         .resize(Number(width), Number(height))
                         .toFile("images/thumb/".concat(filename, "-resized.jpeg"))];
             case 1:
+                // Call the async sharp method
                 _a.sent();
                 return [3 /*break*/, 3];
             case 2:
                 err_1 = _a.sent();
-                console.log('error thrown on line 12');
                 throw err_1;
             case 3: return [2 /*return*/];
         }
