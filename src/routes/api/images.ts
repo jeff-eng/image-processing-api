@@ -13,16 +13,18 @@ images.get('/', paramchecker, async (req: express.Request, res: express.Response
     const height: string = req.query.height as string;
     
     try {
+        // TODO: Implement caching - check if file already exists before doing resize
+        // If file already exists, just serve the file, otherwise run resize and then serve
+        // fs.access(`images/thumb/${filename}-resized.jpeg`, fs.F_OK, (err) => {
+
+        // });
+        const filepath = `images/thumb/${filename}_${width}x${height}.jpeg`;
         await resizer(filename, width, height);    
-        
-        res.status(200).sendFile(`images/thumb/${filename}-resized.jpeg`, {root: '.'});
+        res.status(200).sendFile(filepath, {root: '.'});
     } catch (err) {
-        console.log(err);
         res.status(400).send(`Bad request - ${err}`);
     }
 
-    // The server response when resizer is given an invalid filename
-    
 });
 
 // Export module

@@ -80,14 +80,16 @@ describe('resizer - basic functionality', function () {
     }); });
     // Pass in valid filename that exists in images/full folder and valid width/height
     it('opening file via fs should pass - returns resolved promise; else would return error', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var filename, filepath;
+        var filename, width, height, filepath;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     filename = 'fjord';
-                    filepath = "images/thumb/".concat(filename, "-resized.jpeg");
+                    width = 100;
+                    height = 100;
+                    filepath = "images/thumb/".concat(filename, "_").concat(width, "x").concat(height, ".jpeg");
                     // Calls resizer method to resize and write file to directory
-                    return [4 /*yield*/, (0, resizer_1.default)(filename, 420, 420)];
+                    return [4 /*yield*/, (0, resizer_1.default)(filename, width, height)];
                 case 1:
                     // Calls resizer method to resize and write file to directory
                     _a.sent();

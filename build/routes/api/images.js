@@ -46,7 +46,7 @@ var resizer_1 = __importDefault(require("../../utilities/resizer"));
 var images = express_1.default.Router();
 // Images endpoint with custom middleware
 images.get('/', paramchecker_1.default, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var filename, width, height, err_1;
+    var filename, width, height, filepath, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -56,14 +56,14 @@ images.get('/', paramchecker_1.default, function (req, res) { return __awaiter(v
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
+                filepath = "images/thumb/".concat(filename, "_").concat(width, "x").concat(height, ".jpeg");
                 return [4 /*yield*/, (0, resizer_1.default)(filename, width, height)];
             case 2:
                 _a.sent();
-                res.status(200).send('Success');
+                res.status(200).sendFile(filepath, { root: '.' });
                 return [3 /*break*/, 4];
             case 3:
                 err_1 = _a.sent();
-                console.log(err_1);
                 res.status(400).send("Bad request - ".concat(err_1));
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];

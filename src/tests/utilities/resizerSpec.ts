@@ -23,10 +23,12 @@ describe('resizer - basic functionality', () => {
     // Pass in valid filename that exists in images/full folder and valid width/height
     it('opening file via fs should pass - returns resolved promise; else would return error', async () => {
         const filename = 'fjord';
-        const filepath = `images/thumb/${filename}-resized.jpeg`;
+        const width: number = 100;
+        const height: number = 100;
+        const filepath = `images/thumb/${filename}_${width}x${height}.jpeg`;
 
         // Calls resizer method to resize and write file to directory
-        await resizer(filename, 420, 420);
+        await resizer(filename, width, height);
         // Check that the resized file is in images/thumb folder using file system - resolved means success
         await expectAsync(fs.open(filepath, 'r')).toBeResolved();
     });

@@ -50,7 +50,7 @@ var resizer = function (filename, width, height) { return __awaiter(void 0, void
                 // Call the async sharp method
                 return [4 /*yield*/, (0, sharp_1.default)(filepath)
                         .resize(Number(width), Number(height))
-                        .toFile("images/thumb/".concat(filename, "-resized.jpeg"))];
+                        .toFile("images/thumb/".concat(filename, "_").concat(width, "x").concat(height, ".jpeg"))];
             case 1:
                 // Call the async sharp method
                 _a.sent();

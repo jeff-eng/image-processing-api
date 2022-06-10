@@ -47,11 +47,11 @@ describe('Tests for resizing using URL', () => {
         
     it('fs should be able to resolve promise when trying to open resized image file', async () => {
         const filename = 'fjord';
-        const response = await request.get(`/api/images?filename=${filename}&width=100&height=100`);
+        const width = 100;
+        const height = 100;
+        const response = await request.get(`/api/images?filename=${filename}&width=${width}&height=${height}`);
 
-        await expectAsync(fs.open(`images/thumb/${filename}-resized.jpeg`, 'r')).toBeResolved();
+        await expectAsync(fs.open(`images/thumb/${filename}_${width}x${height}.jpeg`, 'r')).toBeResolved();
     });
     
-    // Test content type in the header for response when served the resized jpeg
-
 });

@@ -83,16 +83,6 @@ describe('Tests /GET requests to /api/images', function () {
     }); });
 });
 describe('Tests for resizing using URL', function () {
-    afterEach(function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, fs_1.promises.unlink('images/thumb/fjord-resized.jpeg')];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
     // Invalid filename and valid width/height values should return 400 error
     it('should return 400 error when invalid filename and valid width/height provided', function () { return __awaiter(void 0, void 0, void 0, function () {
         var filename, response;
@@ -124,15 +114,17 @@ describe('Tests for resizing using URL', function () {
         });
     }); });
     it('fs should be able to resolve promise when trying to open resized image file', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var filename, response;
+        var filename, width, height, response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     filename = 'fjord';
-                    return [4 /*yield*/, request.get("/api/images?filename=".concat(filename, "&width=100&height=100"))];
+                    width = 100;
+                    height = 100;
+                    return [4 /*yield*/, request.get("/api/images?filename=".concat(filename, "&width=").concat(width, "&height=").concat(height))];
                 case 1:
                     response = _a.sent();
-                    return [4 /*yield*/, expectAsync(fs_1.promises.open("images/thumb/".concat(filename, "-resized.jpeg"), 'r')).toBeResolved()];
+                    return [4 /*yield*/, expectAsync(fs_1.promises.open("images/thumb/".concat(filename, "_").concat(width, "x").concat(height, ".jpeg"), 'r')).toBeResolved()];
                 case 2:
                     _a.sent();
                     return [2 /*return*/];
