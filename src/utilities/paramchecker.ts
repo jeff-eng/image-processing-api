@@ -23,7 +23,6 @@ const paramchecker = (req: express.Request, res: express.Response, next: Functio
     } else {
         res.send('Invalid Endpoint - Format should be: \/api\/images?filename=example&width=200&height=200');
     }
-
 };
 
 export default paramchecker;

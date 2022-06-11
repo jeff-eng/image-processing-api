@@ -42,33 +42,58 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var paramchecker_1 = __importDefault(require("../../utilities/paramchecker"));
 var resizer_1 = __importDefault(require("../../utilities/resizer"));
+var node_fs_1 = require("node:fs");
 // Create individual route object for images
 var images = express_1.default.Router();
 // Images endpoint with custom middleware
 images.get('/', paramchecker_1.default, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var filename, width, height, filepath, err_1;
+    var filename, width, height, filepath, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 filename = req.query.filename;
                 width = req.query.width;
                 height = req.query.height;
+                filepath = "images/thumb/".concat(filename, "_").concat(width, "x").concat(height, ".jpeg");
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 3, , 4]);
-                filepath = "images/thumb/".concat(filename, "_").concat(width, "x").concat(height, ".jpeg");
-                return [4 /*yield*/, (0, resizer_1.default)(filename, width, height)];
-            case 2:
-                _a.sent();
+                _a.trys.push([1, 2, , 4]);
+                // Check if file is cached
+                (0, node_fs_1.accessSync)(filepath, node_fs_1.constants.R_OK | node_fs_1.constants.W_OK);
+                // Serve file from cache
                 res.status(200).sendFile(filepath, { root: '.' });
                 return [3 /*break*/, 4];
+            case 2:
+                error_1 = _a.sent();
+                // Attempt to resize image
+                return [4 /*yield*/, resizeImage(filename, width, height, req, res)];
             case 3:
-                err_1 = _a.sent();
-                res.status(400).send("Bad request - ".concat(err_1));
+                // Attempt to resize image
+                _a.sent();
+                // Serve file after resizing and saved to folder
+                res.status(200).sendFile(filepath, { root: '.' });
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); });
+var resizeImage = function (filename, width, height, req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, (0, resizer_1.default)(filename, width, height)];
+            case 1:
+                _a.sent();
+                return [3 /*break*/, 3];
+            case 2:
+                error_2 = _a.sent();
+                res.status(400).send("Bad Request: ".concat(error_2));
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
 // Export module
 exports.default = images;
