@@ -3,11 +3,11 @@ An image processing API that resizes images to user specifications when visiting
 This project was built as part of the Udacity Full Stack JavaScript Nanodegree.
 
 ## Getting Started
-1. Clone this repository and run `npm install` to install all project dependencies.
+1. Clone this repository and run `npm install` on the CLI to install all project dependencies.
 2. Run the scripts below.
 3. Visit the `/api` endpoint. You will be presented with a front-end that has instructions on how to use the API.
 
-### Scripts
+### Scripts to run on the CLI
 - Test Script (compiles project from TypeScript to JavaScript, then runs unit tests)
     - `npm run test`
 - Start Script (starts the server)
@@ -20,8 +20,10 @@ This project was built as part of the Udacity Full Stack JavaScript Nanodegree.
     - `npm run lint`
 
 ## Endpoints
-- `/api`
-- `/api/images?filename=filename&width=width&height=height` where filename, width, and height are user-supplied inputs for the query string parameters.
+- `/` 
+  - this endpoint is the index page with instructions on how exactly to use Image Processing API.
+- `/api/images?filename=filename&width=width&height=height` 
+  - filename, width, and height are user-supplied inputs for the query string parameters.
   - Example: `/api/images?filename=fjord&width=150&height=150`
 
 ## Technologies Used
