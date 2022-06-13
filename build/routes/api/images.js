@@ -77,6 +77,7 @@ images.get('/', paramchecker_1.default, function (req, res) { return __awaiter(v
         }
     });
 }); });
+// Helper function for resizing to make try-catch block cleaner and avoid nested try-catch statements
 var resizeImage = function (filename, width, height, req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var error_2;
     return __generator(this, function (_a) {

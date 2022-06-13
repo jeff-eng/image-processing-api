@@ -63,7 +63,7 @@ describe('Tests /GET requests to /api/images', function () {
                 case 0: return [4 /*yield*/, request.get('/api/images')];
                 case 1:
                     response = _a.sent();
-                    instructions = 'Invalid Endpoint - Format should be: \/api\/images?filename=example&width=200&height=200';
+                    instructions = 'Invalid Endpoint - Format should be: /api/images?filename=example&width=200&height=200';
                     expect(response.text).toEqual(instructions);
                     return [2 /*return*/];
             }
@@ -73,7 +73,9 @@ describe('Tests /GET requests to /api/images', function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/images').query({ name: 'jeff' })];
+                case 0: return [4 /*yield*/, request
+                        .get('/api/images')
+                        .query({ name: 'jeff' })];
                 case 1:
                     response = _a.sent();
                     expect(response.status).toBe(200);
@@ -114,7 +116,7 @@ describe('Tests for resizing using URL', function () {
         });
     }); });
     it('fs should be able to resolve promise when trying to open resized image file', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var filename, width, height, response;
+        var filename, width, height;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -123,7 +125,7 @@ describe('Tests for resizing using URL', function () {
                     height = 100;
                     return [4 /*yield*/, request.get("/api/images?filename=".concat(filename, "&width=").concat(width, "&height=").concat(height))];
                 case 1:
-                    response = _a.sent();
+                    _a.sent();
                     return [4 /*yield*/, expectAsync(fs_1.promises.open("images/thumb/".concat(filename, "_").concat(width, "x").concat(height, ".jpeg"), 'r')).toBeResolved()];
                 case 2:
                     _a.sent();

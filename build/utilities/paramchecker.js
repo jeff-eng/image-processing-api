@@ -18,7 +18,7 @@ var paramchecker = function (req, res, next) {
         next();
     }
     else {
-        res.send('Invalid Endpoint - Format should be: \/api\/images?filename=example&width=200&height=200');
+        res.send('Invalid Endpoint - Format should be: /api/images?filename=example&width=200&height=200');
     }
 };
 exports.default = paramchecker;

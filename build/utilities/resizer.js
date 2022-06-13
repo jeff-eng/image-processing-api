@@ -41,24 +41,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var sharp_1 = __importDefault(require("sharp"));
 var resizer = function (filename, width, height) { return __awaiter(void 0, void 0, void 0, function () {
-    var filepath, err_1;
+    var filepath;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
                 filepath = "images/full/".concat(filename, ".jpeg");
-                // Call the async sharp method
                 return [4 /*yield*/, (0, sharp_1.default)(filepath)
                         .resize(Number(width), Number(height))
                         .toFile("images/thumb/".concat(filename, "_").concat(width, "x").concat(height, ".jpeg"))];
             case 1:
-                // Call the async sharp method
                 _a.sent();
-                return [3 /*break*/, 3];
-            case 2:
-                err_1 = _a.sent();
-                throw err_1;
-            case 3: return [2 /*return*/];
+                return [2 /*return*/];
         }
     });
 }); };
