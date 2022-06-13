@@ -21,7 +21,8 @@ This project was built as part of the Udacity Full Stack JavaScript Nanodegree.
 
 ## Endpoints
 - `/api`
-- `/api/images?filename=*filename*&width=*width*&height=*height*`
+- `/api/images?filename=filename&width=width&height=height` where filename, width, and height are user-supplied inputs for the query string parameters.
+  - Example: `/api/images?filename=fjord&width=150&height=150`
 
 ## Technologies Used
 - TypeScript
