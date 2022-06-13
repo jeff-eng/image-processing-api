@@ -1,4 +1,3 @@
-
 import express from 'express';
 import routes from './routes/index';
 
@@ -10,8 +9,8 @@ const port = 3000;
 // endpoints that start with /api
 app.use('/api', routes);
 
-app.get('/', (req, res) => {
-    res.send('This route is the root.');
+app.get('/', (req: express.Request, res: express.Response) => {
+    res.status(200).sendFile('src/index.html', { root: '.' });
 });
 
 // Start server

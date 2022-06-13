@@ -39,95 +39,64 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var supertest_1 = __importDefault(require("supertest"));
-var app_1 = __importDefault(require("../../../app"));
+var resizer_1 = __importDefault(require("../../utilities/resizer"));
 var fs_1 = require("fs");
-var request = (0, supertest_1.default)(app_1.default);
-describe('Tests /GET requests to /api/images', function () {
-    it('should return status code 200 at /api/images', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/images')];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(200);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('/api/images should return instructions on how to structure URL if not provided', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response, instructions;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/api/images')];
-                case 1:
-                    response = _a.sent();
-                    instructions = 'Invalid Endpoint - Format should be: /api/images?filename=example&width=200&height=200';
-                    expect(response.text).toEqual(instructions);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it('should return 200 when query string parameters provided', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, request
-                        .get('/api/images')
-                        .query({ name: 'jeff' })];
-                case 1:
-                    response = _a.sent();
-                    expect(response.status).toBe(200);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-});
-describe('Tests for resizing using URL', function () {
-    // Invalid filename and valid width/height values should return 400 error
-    it('should return 400 error when invalid filename and valid width/height provided', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var filename, response;
+describe('resizer - basic functionality', function () {
+    // Pass a filename to resizer that doesn't match a filename in images/full folder
+    it('resizer should throw error when passing in non-matching filename as input', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var filename;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    filename = 'beach';
-                    return [4 /*yield*/, request.get("/api/images?filename=".concat(filename, "&width=100&height=100"))];
+                    filename = 'test';
+                    return [4 /*yield*/, expectAsync((0, resizer_1.default)(filename, 420, 420)).toBeRejectedWithError()];
                 case 1:
-                    response = _a.sent();
-                    expect(response.statusCode).toBe(400);
+                    _a.sent();
                     return [2 /*return*/];
             }
         });
     }); });
-    // Response should return and display the resized image when visiting URL with valid parameters
-    it('should return 200 status and image when visiting URL with valid parameters', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var filename, response;
+    // Pass in a width and height that can't be converted to a number
+    it('resizer should throw error when passing strings to width and height as input', function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    filename = 'fjord';
-                    return [4 /*yield*/, request.get("/api/images?filename=".concat(filename, "&width=100&height=100"))];
+                case 0: return [4 /*yield*/, expectAsync((0, resizer_1.default)('fjord', 'foo', 'bar')).toBeRejectedWithError()];
                 case 1:
-                    response = _a.sent();
-                    expect(response.statusCode).toBe(200);
+                    _a.sent();
                     return [2 /*return*/];
             }
         });
     }); });
-    it('fs should be able to resolve promise when trying to open resized image file', function () { return __awaiter(void 0, void 0, void 0, function () {
-        var filename, width, height;
+    // Pass in valid filename but width and height as strings
+    it('resizer should not throw error when providing valid filename but W&H as strings', function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, expectAsync((0, resizer_1.default)('fjord', '420', '420')).not.toBeRejectedWithError()];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    // Pass in valid filename that exists in images/full folder and valid width/height
+    it('opening file via fs should pass - returns resolved promise; else would return error', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var filename, width, height, filepath;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     filename = 'fjord';
                     width = 100;
                     height = 100;
-                    return [4 /*yield*/, request.get("/api/images?filename=".concat(filename, "&width=").concat(width, "&height=").concat(height))];
+                    filepath = "images/thumb/".concat(filename, "_").concat(width, "x").concat(height, ".jpeg");
+                    // Calls resizer method to resize and write file to directory
+                    return [4 /*yield*/, (0, resizer_1.default)(filename, width, height)];
                 case 1:
+                    // Calls resizer method to resize and write file to directory
                     _a.sent();
-                    return [4 /*yield*/, expectAsync(fs_1.promises.open("images/thumb/".concat(filename, "_").concat(width, "x").concat(height, ".jpeg"), 'r')).toBeResolved()];
+                    // Check that the resized file is in images/thumb folder using file system - resolved means success
+                    return [4 /*yield*/, expectAsync(fs_1.promises.open(filepath, 'r')).toBeResolved()];
                 case 2:
+                    // Check that the resized file is in images/thumb folder using file system - resolved means success
                     _a.sent();
                     return [2 /*return*/];
             }

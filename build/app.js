@@ -12,7 +12,7 @@ var port = 3000;
 // endpoints that start with /api
 app.use('/api', index_1.default);
 app.get('/', function (req, res) {
-    res.send('This route is the root.');
+    res.status(200).sendFile('src/index.html', { root: '.' });
 });
 // Start server
 app.listen(port, function () {
