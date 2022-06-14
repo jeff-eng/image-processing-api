@@ -1,49 +1,38 @@
 import express from 'express';
 import paramchecker from '../../utilities/paramchecker';
 import resizer from '../../utilities/resizer';
-import { constants, accessSync } from 'node:fs';
+import { promises as fs } from 'fs';
+import to from '../../utilities/helpers';
 
 // Create individual route object for images
 const images = express.Router();
 
 // Images endpoint with custom middleware
-images.get(
-    '/',
-    paramchecker,
-    async (req: express.Request, res: express.Response) => {
-        const filename: string = req.query.filename as string;
-        const width: string = req.query.width as string;
-        const height: string = req.query.height as string;
-        const filepath = `images/thumb/${filename}_${width}x${height}.jpeg`;
+images.get('/', paramchecker, async (req: express.Request, res: express.Response) => {
+    const filename: string = req.query.filename as string;
+    const width: string = req.query.width as string;
+    const height: string = req.query.height as string;
+    const filepath = `images/thumb/${filename}_${width}x${height}.jpeg`;
+        
+    // Check if file already exists
+    const [error] = await to(fs.access(filepath));
 
-        try {
-            // Check if file is cached
-            accessSync(filepath, constants.R_OK | constants.W_OK);
-            // Serve file from cache
-            res.status(200).sendFile(filepath, { root: '.' });
-        } catch (error) {
-            // Attempt to resize image
-            await resizeImage(filename, width, height, req, res);
-            // Serve file after resizing and saved to folder
-            res.status(200).sendFile(filepath, { root: '.' });
+    // Error handling without using nested try-catch statements
+    if (!error) {
+        // No error from fs.access - Okay to serve cached image
+        res.status(200).sendFile(filepath, { root: '.' });
+    } else if (error) {
+        // Wrapping resizer method with the 'to' helper method to avoid error handling with nested try-catch
+        const [resizingError] = await to(resizer(filename, width, height));
+        // Handle if the resizing fails
+        if (resizingError) {
+            res.status(400).send(`Bad Request: ${resizingError}`);
+        } else {                
+            // Serve the resized image after resizing completes
+            res.status(200).sendFile(filepath, { root: '.'});
         }
     }
-);
-
-// Helper function for resizing to make try-catch block cleaner and avoid nested try-catch statements
-const resizeImage = async (
-    filename: string,
-    width: string,
-    height: string,
-    req: express.Request,
-    res: express.Response
-) => {
-    try {
-        await resizer(filename, width, height);
-    } catch (error) {
-        res.status(400).send(`Bad Request: ${error}`);
-    }
-};
+});
 
 // Export module
 export default images;

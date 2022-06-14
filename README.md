@@ -33,3 +33,6 @@ This project was built as part of the Udacity Full Stack JavaScript Nanodegree.
 - Jasmine (unit testing)
 - Prettier and ESLint (code formatting and linting)
 - [Sharp](https://www.npmjs.com/package/sharp) (resizing images)
+
+## Credited Resources
+- [How to Write Async-Await without try-catch blocks in JavaScript](https://blog.grossman.io/how-to-write-async-await-without-try-catch-blocks-in-javascript/)
