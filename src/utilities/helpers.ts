@@ -4,10 +4,11 @@
 // the return data as the second item. The error received from the catch is the first array item.
 
 const to = (promise: Promise<void>) => {
-    return promise.then(data => {
-        return [null, data];
-    })
-    .catch(err => [err]);
+    return promise
+        .then((data) => {
+            return [null, data];
+        })
+        .catch((err) => [err]);
 };
 
 export default to;
