@@ -13,7 +13,7 @@ This project was built as part of the Udacity Full Stack JavaScript Nanodegree.
     - `npm run prettier`
 - ESLint Linting Script
     - `npm run lint`
- Test Script (compiles project from TypeScript to JavaScript, then runs unit tests)
+- Test Script (compiles project from TypeScript to JavaScript, then runs unit tests)
     - `npm run test`
 - Build Script (builds and compiles project to JavaScript)
     - `npm run build`
