@@ -35,4 +35,20 @@ describe('resizer - basic functionality', () => {
         // Check that the resized file is in images/thumb folder using file system - resolved means success
         await expectAsync(fs.open(filepath, 'r')).toBeResolved();
     });
+
+    // Teardown
+    afterAll(async () => {
+        // Delete the test images created
+        try {
+            await fs.unlink('images/thumb/fjord_100x100.jpeg');
+        } catch (error) {
+            console.error('Error encountered deleting file');
+        }
+
+        try {
+            await fs.unlink('images/thumb/fjord_420x420.jpeg');
+        } catch (error) {
+            console.error(`Error encountered deleting file. ${error}`);
+        }
+    });
 });

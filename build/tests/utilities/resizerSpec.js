@@ -102,4 +102,32 @@ describe('resizer - basic functionality', function () {
             }
         });
     }); });
+    afterAll(function () { return __awaiter(void 0, void 0, void 0, function () {
+        var error_1, error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, fs_1.promises.unlink('images/thumb/fjord_100x100.jpeg')];
+                case 1:
+                    _a.sent();
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_1 = _a.sent();
+                    console.error('Error encountered deleting file');
+                    return [3 /*break*/, 3];
+                case 3:
+                    _a.trys.push([3, 5, , 6]);
+                    return [4 /*yield*/, fs_1.promises.unlink('images/thumb/fjord_420x420.jpeg')];
+                case 4:
+                    _a.sent();
+                    return [3 /*break*/, 6];
+                case 5:
+                    error_2 = _a.sent();
+                    console.error("Error encountered deleting file. ".concat(error_2));
+                    return [3 /*break*/, 6];
+                case 6: return [2 /*return*/];
+            }
+        });
+    }); });
 });
