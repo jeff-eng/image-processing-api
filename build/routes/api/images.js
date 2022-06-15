@@ -42,12 +42,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var paramchecker_1 = __importDefault(require("../../utilities/paramchecker"));
 var resizer_1 = __importDefault(require("../../utilities/resizer"));
-var node_fs_1 = require("node:fs");
+var fs_1 = require("fs");
+var helpers_1 = __importDefault(require("../../utilities/helpers"));
 // Create individual route object for images
 var images = express_1.default.Router();
 // Images endpoint with custom middleware
 images.get('/', paramchecker_1.default, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var filename, width, height, filepath, error_1;
+    var filename, width, height, filepath, error, resizingError;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -55,46 +56,30 @@ images.get('/', paramchecker_1.default, function (req, res) { return __awaiter(v
                 width = req.query.width;
                 height = req.query.height;
                 filepath = "images/thumb/".concat(filename, "_").concat(width, "x").concat(height, ".jpeg");
-                _a.label = 1;
+                return [4 /*yield*/, (0, helpers_1.default)(fs_1.promises.access(filepath))];
             case 1:
-                _a.trys.push([1, 2, , 4]);
-                // Check if file is cached
-                (0, node_fs_1.accessSync)(filepath, node_fs_1.constants.R_OK | node_fs_1.constants.W_OK);
-                // Serve file from cache
+                error = (_a.sent())[0];
+                if (!!error) return [3 /*break*/, 2];
+                // No error from fs.access - Okay to serve cached image
                 res.status(200).sendFile(filepath, { root: '.' });
                 return [3 /*break*/, 4];
             case 2:
-                error_1 = _a.sent();
-                // Attempt to resize image
-                return [4 /*yield*/, resizeImage(filename, width, height, req, res)];
+                if (!error) return [3 /*break*/, 4];
+                return [4 /*yield*/, (0, helpers_1.default)((0, resizer_1.default)(filename, width, height))];
             case 3:
-                // Attempt to resize image
-                _a.sent();
-                // Serve file after resizing and saved to folder
-                res.status(200).sendFile(filepath, { root: '.' });
-                return [3 /*break*/, 4];
+                resizingError = (_a.sent())[0];
+                // Handle if the resizing fails
+                if (resizingError) {
+                    res.status(400).send("Bad Request: ".concat(resizingError));
+                }
+                else {
+                    // Serve the resized image after resizing completes
+                    res.status(200).sendFile(filepath, { root: '.' });
+                }
+                _a.label = 4;
             case 4: return [2 /*return*/];
         }
     });
 }); });
-// Helper function for resizing to make try-catch block cleaner and avoid nested try-catch statements
-var resizeImage = function (filename, width, height, req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var error_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, (0, resizer_1.default)(filename, width, height)];
-            case 1:
-                _a.sent();
-                return [3 /*break*/, 3];
-            case 2:
-                error_2 = _a.sent();
-                res.status(400).send("Bad Request: ".concat(error_2));
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
 // Export module
 exports.default = images;
